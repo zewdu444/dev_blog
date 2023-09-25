@@ -745,6 +745,46 @@ export interface ApiCourseCourse extends Schema.CollectionType {
   };
 }
 
+export interface ApiCoursesPageCoursesPage extends Schema.SingleType {
+  collectionName: 'courses_pages';
+  info: {
+    singularName: 'courses-page';
+    pluralName: 'courses-pages';
+    displayName: 'CoursesPage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.DefaultTo<'our courses'>;
+    slug: Attribute.UID<'api::courses-page.courses-page', 'title'> &
+      Attribute.Required;
+    pageinfo: Attribute.Component<'layout.page-info'>;
+    excludedcourses: Attribute.Relation<
+      'api::courses-page.courses-page',
+      'oneToMany',
+      'api::course.course'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::courses-page.courses-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::courses-page.courses-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiFooterFooter extends Schema.SingleType {
   collectionName: 'footers';
   info: {
@@ -1024,6 +1064,7 @@ declare module '@strapi/strapi' {
       'plugin::i18n.locale': PluginI18NLocale;
       'api::company-info.company-info': ApiCompanyInfoCompanyInfo;
       'api::course.course': ApiCourseCourse;
+      'api::courses-page.courses-page': ApiCoursesPageCoursesPage;
       'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;
       'api::home-page.home-page': ApiHomePageHomePage;
