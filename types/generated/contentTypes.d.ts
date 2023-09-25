@@ -745,6 +745,40 @@ export interface ApiCourseCourse extends Schema.CollectionType {
   };
 }
 
+export interface ApiFooterFooter extends Schema.SingleType {
+  collectionName: 'footers';
+  info: {
+    singularName: 'footer';
+    pluralName: 'footers';
+    displayName: 'Footer';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    socialLinks: Attribute.Component<'config.social-link', true>;
+    footermenu: Attribute.Relation<
+      'api::footer.footer',
+      'oneToOne',
+      'api::menu.menu'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::footer.footer',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::footer.footer',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiHeaderHeader extends Schema.SingleType {
   collectionName: 'headers';
   info: {
@@ -810,6 +844,7 @@ export interface ApiHomePageHomePage extends Schema.SingleType {
     dynamicHomeSection: Attribute.DynamicZone<
       ['layout.newsletter-form', 'layout.mission']
     >;
+    seo: Attribute.Component<'seo.seoinformation'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -881,6 +916,36 @@ export interface ApiPostPost extends Schema.CollectionType {
     createdBy: Attribute.Relation<'api::post.post', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::post.post', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSeoConfigSeoConfig extends Schema.SingleType {
+  collectionName: 'seo_configs';
+  info: {
+    singularName: 'seo-config';
+    pluralName: 'seo-configs';
+    displayName: 'SeoConfig';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    defaultSeo: Attribute.Component<'seo.seoinformation'>;
+    seoimage: Attribute.Media;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::seo-config.seo-config',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::seo-config.seo-config',
+      'oneToOne',
+      'admin::user'
+    > &
       Attribute.Private;
   };
 }
@@ -959,10 +1024,12 @@ declare module '@strapi/strapi' {
       'plugin::i18n.locale': PluginI18NLocale;
       'api::company-info.company-info': ApiCompanyInfoCompanyInfo;
       'api::course.course': ApiCourseCourse;
+      'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;
       'api::home-page.home-page': ApiHomePageHomePage;
       'api::menu.menu': ApiMenuMenu;
       'api::post.post': ApiPostPost;
+      'api::seo-config.seo-config': ApiSeoConfigSeoConfig;
       'api::service.service': ApiServiceService;
       'api::tag.tag': ApiTagTag;
     }
