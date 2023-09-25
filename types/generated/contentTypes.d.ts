@@ -732,6 +732,9 @@ export interface ApiHomePageHomePage extends Schema.SingleType {
     heading: Attribute.String;
     announcement: Attribute.Text;
     postsSelection: Attribute.Component<'blog.posts-selection'>;
+    dynamicHomeSection: Attribute.DynamicZone<
+      ['layout.newsletter-form', 'layout.mission']
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
