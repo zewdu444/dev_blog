@@ -1063,6 +1063,39 @@ export interface ApiServiceService extends Schema.CollectionType {
   };
 }
 
+export interface ApiStaticPageStaticPage extends Schema.CollectionType {
+  collectionName: 'static_pages';
+  info: {
+    singularName: 'static-page';
+    pluralName: 'static-pages';
+    displayName: 'staticPage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
+    slug: Attribute.UID<'api::static-page.static-page', 'title'> &
+      Attribute.Required;
+    pageinfo: Attribute.Component<'layout.page-info', true>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::static-page.static-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::static-page.static-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTagTag extends Schema.CollectionType {
   collectionName: 'tags';
   info: {
@@ -1113,6 +1146,7 @@ declare module '@strapi/strapi' {
       'api::post.post': ApiPostPost;
       'api::seo-config.seo-config': ApiSeoConfigSeoConfig;
       'api::service.service': ApiServiceService;
+      'api::static-page.static-page': ApiStaticPageStaticPage;
       'api::tag.tag': ApiTagTag;
     }
   }
