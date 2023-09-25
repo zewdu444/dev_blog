@@ -676,6 +676,41 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiCompanyInfoCompanyInfo extends Schema.SingleType {
+  collectionName: 'company_infos';
+  info: {
+    singularName: 'company-info';
+    pluralName: 'company-infos';
+    displayName: 'CompanyInfo';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    logo: Attribute.Media;
+    socialLinks: Attribute.Component<'config.social-link', true>;
+    companyemail: Attribute.Email & Attribute.Required;
+    companyName: Attribute.String & Attribute.Required;
+    vat: Attribute.String;
+    companyAddress: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::company-info.company-info',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::company-info.company-info',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCourseCourse extends Schema.CollectionType {
   collectionName: 'courses';
   info: {
@@ -859,6 +894,7 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::company-info.company-info': ApiCompanyInfoCompanyInfo;
       'api::course.course': ApiCourseCourse;
       'api::home-page.home-page': ApiHomePageHomePage;
       'api::post.post': ApiPostPost;
