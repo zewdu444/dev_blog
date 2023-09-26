@@ -20,20 +20,34 @@ module.exports = createCoreController('api::post.post',({strapi}) => ({
   //   return {data: filteredData, meta};
   // }
 
-    async find(ctx) {
+ // solution 2: filter out premium posts in the service
+    // async find(ctx) {
+    //   const isRequestingPremium =ctx.query.filters && ctx.query.filters.premium === false;
+
+    //   if(ctx.state.user || isRequestingPremium){
+    //     return await super.find(ctx);
+    //   }
+    //   // not authenticated, filter out premium posts
+    //   const {query} =ctx;
+    //   const filteredData = await strapi.service('api::post.post').find({
+    //     ...query,
+    //     filters : {
+    //       ...query.filters,
+    //       premium: false
+    //     }
+    //   });
+    //   const sanitizedPosts = await this.sanitizeOutput(filteredData,ctx);
+    //   return this.transformResponse(sanitizedPosts);
+    // },
+  //  solution 3: filter out premium posts in the service
+     async find(ctx) {
       const isRequestingPremium =ctx.query.filters && ctx.query.filters.premium === false;
-
-      if(ctx.state.user || isRequestingPremium){
-        return await super.find(ctx);
-      }
-      // not authenticated, filter out premium posts
-      const filteredData = await strapi.service('api::post.post').find({
-        filters : {
-          premium: false
+        if(ctx.state.user || isRequestingPremium){
+          return await super.find(ctx);
         }
-      });
-      const sanitizedPosts = await this.sanitizeOutput(filteredData,ctx);
-      return this.transformResponse(sanitizedPosts);
-    },
-
+        // not authenticated, filter out premium posts
+        const publicPosts = await strapi.service('api::post.post').findPublic(ctx.query);
+        const sanitizedPosts = await this.sanitizeOutput(publicPosts,ctx);
+        return this.transformResponse(sanitizedPosts);
+     }
 }));
