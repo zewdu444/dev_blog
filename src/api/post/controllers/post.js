@@ -49,5 +49,17 @@ module.exports = createCoreController('api::post.post',({strapi}) => ({
         const publicPosts = await strapi.service('api::post.post').findPublic(ctx.query);
         const sanitizedPosts = await this.sanitizeOutput(publicPosts,ctx);
         return this.transformResponse(sanitizedPosts);
+     },
+     async likePost(ctx){
+      const  user = ctx.state.user;
+      const postId=ctx.params.id;
+      const {query} =ctx;
+      const updatedPost = await strapi.service('api::post.post').likePost({
+        postId,
+         userId: user.id,
+         query
+      });
+      const sanitizedPost = await this.sanitizeOutput(updatedPost,ctx);
+      return this.transformResponse(sanitizedPost);
      }
 }));
