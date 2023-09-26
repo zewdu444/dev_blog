@@ -51,6 +51,11 @@
       "type": "component",
       "repeatable": false,
       "component": "seo.seoinformation"
+    },
+    "premium": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

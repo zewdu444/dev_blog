@@ -10,6 +10,6 @@ module.exports = createCoreRouter('api::post.post',{
   config:{
      find:{
        policies:['is-admin']
-     }
+     },
   }
 });
