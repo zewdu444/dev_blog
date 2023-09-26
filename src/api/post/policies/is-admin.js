@@ -5,8 +5,12 @@
  */
 
 module.exports = (policyContext, config, { strapi }) => {
-    // Add your own logic here.
-    strapi.log.info('In is-admin policy.');
+   console.log(strapi);
+   const isEligible= policyContext.state.user && policyContext.request.user.role.code === 'admin';
+  // Add your own logic here.
+    if (isEligible) {
+      return true;
+    }
 
     const canDoSomething = true;
 
